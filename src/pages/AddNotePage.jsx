@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './AddNotePage.css'
+import { useNavigate } from 'react-router-dom'
+
 
 const AddNotePage = () => {
 
@@ -26,6 +28,7 @@ const AddNotePage = () => {
     body: body,
     category: category
   }
+  const navigate = useNavigate();
   const handlSubmit = (e) => {
     e.preventDefault()
     if (!title && !body && category != " ") {
@@ -33,7 +36,7 @@ const AddNotePage = () => {
       return;
     }
     addNote(newNote);
-    console.log(newNote);
+    navigate('/') 
   }
   return (
     <form onSubmit={handlSubmit}>
