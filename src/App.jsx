@@ -8,6 +8,8 @@ import NoteDetailPage from './pages/NoteDetailPage'
 import EditNotePage from './pages/EditNotePage'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {toast } from 'react-toastify';
+
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -22,12 +24,23 @@ const App = () => {
       });
   }, []); 
   
- 
+  const addNote = (data) => {
+    axios.post('http://127.0.0.1:8000/notes/', data)
+      .then(res => {
+        toast.success("A New Note Added!");
+        console.log(res.data);
+       
+      })
+      .catch(err => {
+        console.log(err.message);
+      })
+
+  }
   
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element = {<MainLayouts/>}>
       <Route index element={<HomePage data = {notes} />} />
-      <Route path='add-note' element={<AddNotePage/>} />
+      <Route path='add-note' element={<AddNotePage addNote={addNote}/>} />
       <Route path='notes/:slug' element={<NoteDetailPage />} />
       <Route path='edit-note/:slug' element={<EditNotePage />} />
     </Route>

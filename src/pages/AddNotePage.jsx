@@ -4,20 +4,7 @@ import './AddNotePage.css'
 import { useNavigate } from 'react-router-dom'
 
 
-const AddNotePage = () => {
-
-
-  const addNote = (data) => {
-    axios.post('http://127.0.0.1:8000/notes/', data)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err.message);
-      })
-
-  }
-
+const AddNotePage = ({addNote}) => {
 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");

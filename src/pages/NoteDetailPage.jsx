@@ -4,6 +4,7 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { FormatDate } from '../components/FormatDate';
+import {toast } from 'react-toastify';
 import axios from 'axios';
 
 
@@ -24,6 +25,7 @@ const NoteDetailPage = () => {
     const deleteNote  = ()=>{
         axios.delete(`http://127.0.0.1:8000/notes/${slug}`)
         .then(res => {
+            toast.error("Note Deleted!");
             navigate('/')
         })
         .catch(err => {
