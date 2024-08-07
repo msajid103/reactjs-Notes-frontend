@@ -28,6 +28,7 @@ const App = () => {
     axios.post('http://127.0.0.1:8000/notes/', data)
       .then(res => {
         toast.success("A New Note Added!");
+        setNotes([...notes, res.data])
         console.log(res.data);
        
       })
