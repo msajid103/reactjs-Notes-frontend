@@ -18,8 +18,7 @@ const AddNotePage = ({addNote}) => {
   const navigate = useNavigate();
   const handlSubmit = (e) => {
     e.preventDefault()
-    if (!title && !body && category != " ") {
-      console.log("Value not added");
+    if (!title && !body && category != " ") {      
       return;
     }
     addNote(newNote);

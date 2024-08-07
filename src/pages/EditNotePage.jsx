@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const EditNotePage = () => {
+const EditNotePage = ({editNote}) => {
   const [title, settitle] = useState("")
   const [body, setbody] = useState("")
   const [category, setcategory] = useState("")
@@ -21,23 +21,15 @@ const EditNotePage = () => {
           console.log(err.message)
       })
 }, [slug])
-const addUpdatedNote = (data, slug)=>{
-  axios.put(`http://127.0.0.1:8000/notes/${slug}`,data)
-  .then(res =>{
-    toast.success("Note Updated!");
-    console.log(res.data)
-  })
-  .catch(err =>{
-    console.log(err.message)
-  })
-}
+
 
 const navigate = useNavigate()
 const handlSubmit = (e)=>{
   e.preventDefault()
   if (!title && !body && !category)  return;
-  addUpdatedNote(updatedNote, slug)
+  editNote(updatedNote, slug)
   navigate('/')
+  toast.success("Note Updated Successfully!"); 
 }
 
 const updatedNote = {
