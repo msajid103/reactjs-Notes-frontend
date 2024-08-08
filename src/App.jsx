@@ -8,12 +8,9 @@ import NoteDetailPage from './pages/NoteDetailPage'
 import EditNotePage from './pages/EditNotePage'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {toast } from 'react-toastify';
-
-
 const App = () => {
   const [notes, setNotes] = useState([]);
-
+  const [filter, setfilter] = useState("All Notes")
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/notes/')  // Your API endpoint
       .then(response => {
@@ -24,13 +21,12 @@ const App = () => {
       });
   }, []);
 
-  
+
   const addNote = (data) => {
     axios.post('http://127.0.0.1:8000/notes/', data)
       .then(res => {
-        toast.success("A New Note Added!");
-        setNotes([...notes, res.data])       
-       
+        setNotes([...notes, res.data])
+
       })
       .catch(err => {
         console.log(err.message);
@@ -38,35 +34,42 @@ const App = () => {
 
   }
 
-  const deleteNote  = (slug)=>{
+  const deleteNote = (slug) => {
     axios.delete(`http://127.0.0.1:8000/notes/${slug}`)
-    .then(res =>{
-      const filteredData = notes.filter(item => item.slug !== slug);  
-      setNotes(filteredData)
-    }) 
-    .catch(err => {
+      .then(res => {
+        const filteredData = notes.filter(item => item.slug !== slug);
+        setNotes(filteredData)
+      })
+      .catch(err => {
         console.log(err.message)
-    })
-}
+      })
+  }
 
-const editNote = (data, slug)=>{
-  axios.put(`http://127.0.0.1:8000/notes/${slug}`,data)
-  .then(res =>{
-    const filteredData = notes.filter(item => item.slug !== slug);  
-    setNotes([...filteredData,res.data])    
-    console.log(res.data)
-  })
-  .catch(err =>{
-    console.log(err.message)
-  })
-}
-  
+  const editNote = (data, slug) => {
+    axios.put(`http://127.0.0.1:8000/notes/${slug}`, data)
+      .then(res => {
+        const filteredData = notes.filter(item => item.slug !== slug);
+        setNotes([...filteredData, res.data])
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
+  }
+
+
+  const filterText = (value) => {
+    setfilter(value)
+  };
+  const data = filter === "All Notes" ? notes
+    : notes.filter(item => item.category === filter);
+
   const router = createBrowserRouter(createRoutesFromElements(
-    <Route path='/' element = {<MainLayouts/>}>
-      <Route index element={<HomePage data = {notes} />} />
-      <Route path='add-note' element={<AddNotePage addNote={addNote}/>} />
-      <Route path='notes/:slug' element={<NoteDetailPage deleteNote = {deleteNote} />} />
-      <Route path='edit-note/:slug' element={<EditNotePage editNote = {editNote} />} />
+    <Route path='/' element={<MainLayouts />}>
+      <Route index element={<HomePage data={data} filterText={filterText} />} />
+      <Route path='add-note' element={<AddNotePage addNote={addNote} />} />
+      <Route path='notes/:slug' element={<NoteDetailPage deleteNote={deleteNote} />} />
+      <Route path='edit-note/:slug' element={<EditNotePage editNote={editNote} />} />
     </Route>
 
   ))

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './AddNotePage.css'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 const AddNotePage = ({addNote}) => {
@@ -17,11 +18,13 @@ const AddNotePage = ({addNote}) => {
   }
   const navigate = useNavigate();
   const handlSubmit = (e) => {
-    e.preventDefault()
-    if (!title && !body && category != " ") {      
+    e.preventDefault()   
+    if (!title || !body || !category) { 
+      toast.error("Fill All Fields!");    
       return;
-    }
+    }    
     addNote(newNote);
+    toast.success("A New Note Added!");
     navigate('/') 
   }
   return (
